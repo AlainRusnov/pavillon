@@ -21,7 +21,7 @@ function Box(props) {
       onPointerOver={(e) => setHover(true)}
       onPointerOut={(e) => setHover(false)}>
       <boxBufferGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={hovered ? 'hotpink' : 'aqua'} />
+      <meshStandardMaterial color={hovered ? 'hotpink' : 'blue'} />
     </mesh>
   )
 }
@@ -51,6 +51,10 @@ const CameraControls = () => {
   );
 };
 
+function SkyBox() {
+  return null;
+}
+
 export default function App() {
   return (
     <Canvas>
@@ -61,6 +65,7 @@ export default function App() {
       <Box position={[-1.2, 0, 0]} />
       <Box position={[1.2, 0, 0]} />
       <Box position={[1.2, 5, -5]} />
+      <SkyBox />
     </Canvas>
   )
 }
