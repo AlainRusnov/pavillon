@@ -1,6 +1,7 @@
-import React, { useRef, useState } from 'react'
-import { Canvas, extend, useThree, useFrame } from 'react-three-fiber'
+import React, { useRef, useState } from 'react';
+import { Canvas, extend, useThree, useFrame } from 'react-three-fiber';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { CubeTextureLoader } from "three";
 
 function Box(props) {
   // This reference will give us direct access to the mesh
@@ -21,7 +22,7 @@ function Box(props) {
       onPointerOver={(e) => setHover(true)}
       onPointerOut={(e) => setHover(false)}>
       <boxBufferGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={hovered ? 'hotpink' : 'blue'} />
+      <meshStandardMaterial color={hovered ? 'hotpink' : 'white'} />
     </mesh>
   )
 }
@@ -45,26 +46,39 @@ const CameraControls = () => {
     <orbitControls
       ref={controls}
       args={[camera, domElement]}
-      autoRotate={true}
+      autoRotate={false}
       enableZoom={false}
     />
   );
 };
 
 function SkyBox() {
-  return null;
+  const { scene } = useThree();
+  const loader = new CubeTextureLoader();
+  // The CubeTextureLoader load method takes an array of urls representing all 6 sides of the cube.
+  const texture = loader.load([
+    './img/skybox/px.png',
+    './img/skybox/nx.png',
+    './img/skybox/py.png',
+    './img/skybox/ny.png',
+    './img/skybox/pz.png',
+    './img/skybox/nz.png',
+  ]);
+  // Set the scene background property to the resulting texture.
+  scene.background = texture;
+  return null;;
 }
 
 export default function App() {
   return (
     <Canvas>
       <CameraControls />
-      <ambientLight intensity={0.5} />
-      <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
+      <ambientLight intensity={0.4} />
+      <spotLight position={[10, 10, 10]} angle={0.15} penumbra={0.8} />
       <pointLight position={[-10, -10, -10]} />
-      <Box position={[-1.2, 0, 0]} />
-      <Box position={[1.2, 0, 0]} />
-      <Box position={[1.2, 5, -5]} />
+      <Box position={[-10, 0, -4]} />
+      <Box position={[5, 0, 10]} />
+      <Box position={[10, 5, -8]} />
       <SkyBox />
     </Canvas>
   )
